@@ -6,3 +6,8 @@
 go build -o bin/test1 -ldflags "-s -w" \
 ./entrypoint/main.go
 ```
+
+```bash
+go run \
+./entrypoint/main.go --config config/local.yaml
+```
