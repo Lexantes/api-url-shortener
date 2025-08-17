@@ -6,9 +6,12 @@ import (
 	"os"
 
 	"github.com/Lexantes/api-url-shortener/internal/config"
+	mwLogger "github.com/Lexantes/api-url-shortener/internal/http-server/middleware/logger"
 	"github.com/Lexantes/api-url-shortener/internal/lib/logger/sl"
 	"github.com/Lexantes/api-url-shortener/internal/storage/sqlite"
 
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
 	"github.com/jessevdk/go-flags"
 )
 
@@ -42,6 +45,13 @@ func main() {
 
 	_ = storage
 
+	router := chi.NewRouter()
+
+	// TODO: разобраться с логгером
+	router.Use(middleware.RequestID)
+	router.Use(mwLogger.New(log))
+	router.Use(middleware.Recoverer)
+	router.Use(middleware.URLFormat)
 	// todo: init router: chi, "chi render"
 
 	// todo: run server:
